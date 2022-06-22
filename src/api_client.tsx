@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://infinite-coast-03048.herokuapp.com';
 const ENDPOINT_PATH = '/api/bottle';
 
 export type Bottle = {
