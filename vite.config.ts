@@ -3,9 +3,10 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  root: './src',
   base: '/binn-web/',
   build: {
-    outDir: './'
+    outDir: './',
   },
   server: {
     host: '0.0.0.0',

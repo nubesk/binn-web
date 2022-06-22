@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import './App.css';
 
 import BottleList from './components/BottleList';
 import FormPostBottle from './components/FormPostBottle';
