@@ -1,27 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import ApiClient, { Bottle } from '../api_client'
 
 
 export default function Bottles(): Array<Bottle> {
+    const isFirstRender = useRef(true);
     const [bottles, setBottles] = useState<Array<Bottle>>([]);
-    const [tick, setTick] = useState<number>(0);
-    const client = new ApiClient();
-    let isInitialized = false;
-    
-    useEffect(() => {
-        if (isInitialized) return
-        isInitialized = true;
+    const [n, setN] = useState<number>(0);
+    const client = ApiClient;
 
-        client.get().then((bottle: Bottle) => {
-            setBottles(bottles.concat([bottle]));
-        }).catch((err: Error) => {
-            console.error(err);
-            setTimeout(() => {
-                setTick(tick+1);
-            }, 5000)
-        });
-    }, [bottles, tick])
+    useEffect(() => {
+        if (isFirstRender.current) {
+            client.get((bottle: Bottle) => {
+                setBottles((bottles: Array<Bottle>) => [...bottles, bottle]);
+            });
+            isFirstRender.current = false;
+        } else {
+            return;
+        }
+    }, []);
 
     return bottles;
 }

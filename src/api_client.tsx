@@ -11,28 +11,22 @@ export type Message = {
     text: string
 }
 
-export default class ApiClient {
-    get(): Promise<Bottle> {
-        return fetch(
-            [BASE_URL, ENDPOINT_PATH].join(''),
-            {
-                method: 'GET',
-            }
-        ).then((res) => {
-            if (res.status !== 200) {
-                return new Promise((_, reject) => {
-                    reject(new Error("the status code is not 200"))
-                })
-            }
-            return res.json();
-        })
-            .then((json) => {
-                return {
-                    id: json.id,
-                    message: json.message,
-                    expiredAt: json.expired_at,
-                };
-            });
+class ApiClient {
+    evtSource: EventSource
+    
+    constructor() {
+        this.evtSource = new EventSource([BASE_URL, ENDPOINT_PATH].join(''));
+    }
+    
+    get(callback: (bottle: Bottle) => void) {
+        this.evtSource.addEventListener("bottle", (event: any) => {
+            const json = JSON.parse(event.data);
+            callback({
+                id: json.id,
+                message: json.message,
+                expiredAt: json.expired_at,
+            })
+        });
     }
 
     post(message: string, id: string): Promise<Boolean>{
@@ -57,3 +51,5 @@ export default class ApiClient {
         })
     }
 }
+
+export default new ApiClient;

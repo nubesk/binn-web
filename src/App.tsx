@@ -11,10 +11,8 @@ export default function App(): JSX.Element {
   const [ ids, useIdHandler ] = Ids(bottles);
   return (
     <div className="App">
-      <React.StrictMode>
-        <FormPostBottle ids={ ids } useIdHandler={ useIdHandler }/>
-        <BottleList bottles={ bottles }/>
-      </React.StrictMode>
+      <FormPostBottle ids={ ids } useIdHandler={ useIdHandler }/>
+      <BottleList bottles={ bottles }/>
     </div>
   );
 }
